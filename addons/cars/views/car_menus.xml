@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Top-level menu for Cars -->
+    <menuitem id="cars_menu_root"
+              name="Cars"
+              sequence="20"/> <!-- Sequence to position it (e.g., after Real Estate) -->
+
+    <!-- Submenu for Cars under the main Cars menu -->
+    <menuitem id="cars_menu_cars"
+              name="Cars"
+              parent="cars_menu_root"
+              sequence="10"/>
+
+    <!-- Menu item to open all car records -->
+    <menuitem id="cars_car_menu_action"
+              name="All Cars"
+              parent="cars_menu_cars"
+              action="cars_car_action"
+              sequence="10"/>
+</odoo>
