@@ -25,6 +25,7 @@ class Car(models.Model):
                              )
     customer_id = fields.Many2one('res.partner', string="Customer")
     active = fields.Boolean(default=True)
+    image = fields.Binary(string="Car image", attachment=True, help="upload image of the car")
 
 
     @api.depends('cost_price', 'selling_price')
