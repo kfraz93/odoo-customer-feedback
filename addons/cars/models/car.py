@@ -5,7 +5,7 @@ from odoo import models, fields, api
 class Car(models.Model):
     _name = "cars.car"
     _description = "Cars for sale"
-    _order = "name_asc"
+    _order = "name asc"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string="Car name", required=True, help="Make and model of the car")
