@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <!-- Action for cars management -->
-        <record id="cars_car_action" model="ir.actions.act_window">
+    <record id="cars_car_action" model="ir.actions.act_window">
         <field name="name">Cars</field>
         <field name="res_model">cars.car</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form, graph</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your first car record!
@@ -48,7 +48,9 @@
                     <field name="image" widget="image" class="oe_avatar oe_left" nolabel="1"/>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
-                        <h1><field name="name"/></h1>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
                         <field name="active" invisible="1"/>
                     </div>
 
@@ -99,6 +101,17 @@
                     <filter name="group_by_model_year" string="Model Year" context="{'group_by': 'model_year'}"/>
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="cars_car_view_graph" model="ir.ui.view">
+        <field name="name">cars.car.graph</field>
+        <field name="model">cars.car</field>
+        <field name="arch" type="xml">
+            <graph string="Cars Profit Analysis" type="bar">
+                <field name="model_year" type="row"/>
+                <field name="profit" type="measure"/>
+            </graph>
         </field>
     </record>
 
