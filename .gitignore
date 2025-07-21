@@ -1,0 +1,33 @@
+# Odoo specific ignores
+/odoo-web-data/
+/odoo-db-data/
+/config/odoo.conf
+/log/
+*.log
+*.pyc
+*.pyo
+*.po
+*.mo
+.ipynb_checkpoints/
+.DS_Store
+.env
+.envrc
+
+# Python specific ignores
+__pycache__/
+*.egg-info/
+.Python
+build/
+dist/
+venv/
+env/
+
+# IDE specific ignores (PyCharm)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Docker specific ignores
+*.swp
+.dockerignore

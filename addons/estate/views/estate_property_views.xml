@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--  action for the model estate.property -->
+        <record id="estate_property_action" model="ir.actions.act_window">
+            <field name="name">Properties</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first property!
+                </p>
+            </field>
+        </record>
+
+        <!-- List (Tree) View for Estate Property -->
+    <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view for Estate Property -->
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <!-- Ribbon for Archived status -->
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger"
+                            invisible="active"/>
+
+                    <!-- Top section with name and active field -->
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                        <field name="active" invisible="1"/> <!-- Keep active field invisible -->
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+  <!-- Search View for Estate Property -->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Properties">
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <!-- REQUIRED FILTER: Available properties -->
+                <filter name="filter_available" string="Available" domain="[('state', 'in', ['new', 'offer received'])]"/>
+
+                <!-- REQUIRED GROUP BY: Postcode -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

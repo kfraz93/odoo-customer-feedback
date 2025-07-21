@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Root Menu for Estate App -->
+    <menuitem id="estate_menu_root"
+              name="Real Estate"
+              web_icon="estate,static/description/icon.png"
+              sequence="10"/> <!-- Adjust sequence to position the menu -->
+
+    <!-- First Level Menu: Properties -->
+    <menuitem id="estate_menu_properties"
+              name="Properties"
+              parent="estate_menu_root"
+              sequence="10"/>
+
+    <!-- Action Menu Item: Links to the Property Action -->
+    <menuitem id="estate_property_menu_action"
+              name="All Properties"
+              parent="estate_menu_properties"
+              action="estate_property_action"
+              sequence="10"/>
+
+    <!-- Submenu for Settings under Real Estate -->
+    <menuitem id="estate_menu_settings"
+              name="Settings"
+              parent="estate_menu_root"
+              sequence="100"/>
+
+    <!-- Menu item for Property Types under Settings -->
+    <menuitem id="estate_property_type_menu_action"
+              name="Property Types"
+              parent="estate_menu_settings"
+              action="estate_property_type_action"
+              sequence="10"/>
+
+</odoo>

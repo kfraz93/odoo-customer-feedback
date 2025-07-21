@@ -1,0 +1,58 @@
+# docker-compose.yml
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+    env_file:
+      - ./.env
+    environment:
+      # - HOST=db # <--- REMOVED: No longer needed in odoo.conf via variable expansion
+      - USER=${POSTGRES_USER}
+      - PASSWORD=${POSTGRES_PASSWORD}
+      - ODOO_RC=/etc/odoo/odoo.conf
+  db:
+    image: postgres:16.0
+    env_file:
+      - ./.env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:
+
+#services:
+#  web:
+#    image: odoo:17.0
+#    depends_on:
+#      - db
+#    ports:
+#      - "8069:8069"
+#    volumes:
+#      - odoo-web-data:/var/lib/odoo
+#      - ./config:/etc/odoo
+#      - ./addons:/mnt/extra-addons
+#  db:
+#    image: postgres:16.0
+#    environment:
+#      - POSTGRES_DB=postgres
+#      - POSTGRES_PASSWORD=odoo
+#      - POSTGRES_USER=odoo
+#      - PGDATA=/var/lib/postgresql/data/pgdata
+#    volumes:
+#      - odoo-db-data:/var/lib/postgresql/data/pgdata
+#
+#volumes:
+#  odoo-web-data:
+#  odoo-db-data:
