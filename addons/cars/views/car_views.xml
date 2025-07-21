@@ -1,1 +1,103 @@
-<?xml version="1.0" encodiing="UTF8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Action for cars management -->
+        <record id="cars_car_action" model="ir.actions.act_window">
+        <field name="name">Cars</field>
+        <field name="res_model">cars.car</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first car record!
+            </p>
+        </field>
+    </record>
+
+    <!-- List (Tree) View for Cars -->
+    <record id="cars_car_view_tree" model="ir.ui.view">
+        <field name="name">cars.car.tree</field>
+        <field name="model">cars.car</field>
+        <field name="arch" type="xml">
+            <tree string="Cars">
+                <field name="name"/>
+                <field name="model_year"/>
+                <field name="vin"/>
+                <field name="cost_price"/>
+                <field name="selling_price"/>
+                <field name="profit"/>
+                <field name="state"/>
+                <field name="customer_id"/>
+                <field name="active" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for Cars -->
+    <record id="cars_car_view_form" model="ir.ui.view">
+        <field name="name">cars.car.form</field>
+        <field name="model">cars.car</field>
+        <field name="arch" type="xml">
+            <form string="Car Details">
+                <header>
+                    <!-- Buttons for state changes could go here -->
+                </header>
+                <sheet>
+                    <!-- Ribbon for Archived status -->
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" invisible="active"/>
+
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                        <field name="active" invisible="1"/>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="model_year"/>
+                            <field name="vin"/>
+                            <field name="cost_price"/>
+                            <field name="selling_price"/>
+                            <field name="profit"/> <!-- Display computed profit -->
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="customer_id"/> <!-- Many2one field -->
+                        </group>
+                    </group>
+
+                    <!-- Optional: Add description or other fields here -->
+                    <group>
+                        <field name="description" placeholder="Add a description for the car..."/>
+                    </group>
+
+                    <!-- Chatter for communication (requires 'mail' dependency in __manifest__.py) -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View for Cars (Basic) -->
+    <record id="cars_car_view_search" model="ir.ui.view">
+        <field name="name">cars.car.search</field>
+        <field name="model">cars.car</field>
+        <field name="arch" type="xml">
+            <search string="Search Cars">
+                <field name="name"/>
+                <field name="vin"/>
+                <field name="model_year"/>
+                <field name="state"/>
+                <field name="customer_id"/>
+
+                <group expand="0" string="Group By">
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_by_model_year" string="Model Year" context="{'group_by': 'model_year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>
