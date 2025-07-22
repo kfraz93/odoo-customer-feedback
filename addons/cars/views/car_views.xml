@@ -59,6 +59,7 @@
                         <group>
                             <field name="model_year"/>
                             <field name="vin"/>
+                            <field name="listing_date"/>
                             <field name="cost_price"/>
                             <field name="selling_price"/>
                             <field name="profit"/> <!-- Display computed profit -->
