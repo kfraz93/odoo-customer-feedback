@@ -1,6 +1,8 @@
+from datetime import date
 from email.policy import default
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class Car(models.Model):
     _name = "cars.car"
@@ -26,6 +28,7 @@ class Car(models.Model):
     customer_id = fields.Many2one('res.partner', string="Customer")
     active = fields.Boolean(default=True)
     image = fields.Binary(string="Car image", attachment=True, help="upload image of the car")
+    listing_date = fields.Date(string="Listing Date", default=fields.Date.today())
 
 
     @api.depends('cost_price', 'selling_price')
@@ -33,3 +36,15 @@ class Car(models.Model):
         for record in self:
             record.profit = record.selling_price - record.cost_price if (
                 record.selling_price) else 0.0
+
+
+    @api.constrains('cost_price', 'selling_price', 'listing_date')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price and record.selling_price < record.cost_price:
+                if record.listing_date:
+                    days_since_listing = (date.today() - record.listing_date).days
+                else:
+                    days_since_listing = 0
+                if days_since_listing < 365:
+                    raise ValidationError("The selling price cannot be lower than cost price!")
