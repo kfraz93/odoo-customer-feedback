@@ -18,7 +18,7 @@
         <field name="model">cars.car</field>
         <field name="arch" type="xml">
             <tree string="Cars">
-                <field name="image" widget="image" class="oe_avatar"/>
+                <field name="image" widget="image" class="oe_avatar" options="{'size': [40, 40]}"/>
                 <field name="name"/>
                 <field name="model_year"/>
                 <field name="vin"/>
