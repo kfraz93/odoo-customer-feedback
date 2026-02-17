@@ -3,16 +3,17 @@ from datetime import timedelta
 from odoo import models, fields
 
 
-class TestModel(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "testing model of odoo"
 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False,
-                                    default=fields.Datetime.today() + timedelta(
-                                        days=90))
+    date_availability = fields.Date(
+        default=lambda self: fields.Date.today() + timedelta(days=90)
+    )
+
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -28,8 +29,8 @@ class TestModel(models.Model):
         help="Specify the direction of garden")
     state = fields.Selection(
         string='Status',
-        selection=[('new', 'New'), ('offer received', 'Offer Received'),
-                   ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'),
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'),
+                   ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'),
                    ('cancelled', 'Cancelled')],
         help="Current status of the property (e.g., New, Sold).", default='new',
         required=True, copy=False)

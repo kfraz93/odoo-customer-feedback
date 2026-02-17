@@ -1,9 +1,10 @@
 {
     'name': "Cars Management",
-    'version': "1.0",
+    'version': "17.0.1.0.0",
     'depends': ['base',
                 'mail'],
     'author'    : "Fraz Ahmad",
+    'license': "GPL-3",
     'category': "Sales",
     'description': "A module to manage car inventory, sales, and profit tracking.",
     'data': [

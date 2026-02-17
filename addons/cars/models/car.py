@@ -1,5 +1,4 @@
 from datetime import date
-from email.policy import default
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
@@ -28,7 +27,7 @@ class Car(models.Model):
     customer_id = fields.Many2one('res.partner', string="Customer")
     active = fields.Boolean(default=True)
     image = fields.Binary(string="Car image", attachment=True, help="upload image of the car")
-    listing_date = fields.Date(string="Listing Date", default=fields.Date.today())
+    listing_date = fields.Date(string="Listing Date", default=fields.Date.today)
 
 
     @api.depends('cost_price', 'selling_price')

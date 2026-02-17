@@ -1,6 +1,7 @@
 {
     'name': 'Estate',
-    'version': '0.1',
+    'version': '17.0.1.0.0',
+    'license': "GPL-3",
     'depends': [
         'base',
     ],
