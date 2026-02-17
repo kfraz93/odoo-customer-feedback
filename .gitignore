@@ -1,35 +1,10 @@
-# Odoo specific ignores
-/odoo-web-data/
-/odoo-db-data/
-/config/odoo.conf
-/log/
-*.log
+# Odoo / Python specific
 *.pyc
-*.pyo
-*.po
-*.mo
-.ipynb_checkpoints/
-.DS_Store
-.env
-.envrc
-
-# Python specific ignores
 __pycache__/
-*.egg-info/
-.Python
-build/
-dist/
-venv/
-env/
 
-# IDE specific ignores (PyCharm)
+# IDE and OS specific
 .idea/
-*.iml
-*.ipr
-*.iws
 
-# Docker specific ignores
-*.swp
-.dockerignore
-
-Prep.md
+# Reports and logs
+*.log
+Odoo 17 Code Review Report.txt
