@@ -1,59 +1,191 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--  action for the model estate.property -->
-        <record id="estate_property_action" model="ir.actions.act_window">
-            <field name="name">Properties</field>
-            <field name="res_model">estate.property</field>
-            <field name="view_mode">tree,form</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create your first property!
-                </p>
-            </field>
-        </record>
+    <!-- Action for the model estate.property -->
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first property!
+            </p>
+        </field>
+    </record>
 
-        <!-- List (Tree) View for Estate Property -->
+    <!-- Kanban View for Estate Property -->
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban string="Properties">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="expected_price"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('estate.property', 'image_1920', record.id.raw_value)" alt="Property"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <div><field name="property_type_id"/></div>
+                                <div>Price: <field name="expected_price"/> €</div>
+                                <div>Status: <field name="state" widget="badge"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- List (Tree) View for Estate Property -->
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Properties">
-                <field name="name"/>
+                <field name="name" string="House Model"/>
+                <field name="property_type_id"/>
+                <field name="is_musterhaus" string="Musterhaus"/>
+                <field name="musterhaus_location" string="Location"/>
+                <field name="energy_efficiency" string="Energy Standard"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
+                <field name="living_area" string="Living Area (m²)"/>
+                <field name="expected_price" string="Base Price (€)"/>
+                <field name="selling_price" string="Selling Price (€)"/>
                 <field name="date_availability"/>
-                <field name="state"/>
+                <field name="state" widget="badge"/>
             </tree>
         </field>
     </record>
 
-    <!-- Form view for Estate Property -->
+    <!-- Form View for Estate Property -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <!-- Header Status Bar & Action Buttons -->
+                <header>
+                    <!-- Workflow Action Buttons for Python methods -->
+                    <button name="action_configure"
+                            type="object"
+                            string="Configure"
+                            invisible="state != 'draft'"
+                            class="btn-primary"
+                            title="Lock in initial parameters and transition project from Draft to Configured."/>
+
+                    <button name="action_construction"
+                            type="object"
+                            string="Start Construction"
+                            invisible="state != 'configured'"
+                            class="btn-primary"
+                            title="Initiate plant manufacturing and site construction phase."/>
+                    <button name="action_handover"
+                            type="object"
+                            string="Keys Handed Over (Schlüsselübergabe)"
+                            class="oe_highlight"
+                            invisible="state != 'construction'"
+                            title="Execute key handover ('Erst bauen - dann zahlen') and automatically generate the accounting invoice."/>
+                    <button name="action_cancel"
+                            type="object"
+                            string="Cancel"
+                            invisible="state in ('invoiced', 'cancelled')"
+                            class="btn-secondary"
+                            title="Permanently cancel the project contract (disabled once financial invoice is posted)."/>
+                    <button name="action_draft"
+                            type="object"
+                            string="Reset to Draft"
+                            invisible="state == 'draft'"
+                            groups="base.group_user"
+                            title="Roll project state safely back to Draft for re-testing or corrections."/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,configured,construction,handover,invoiced"/>
+                </header>
+
                 <sheet>
                     <!-- Ribbon for Archived status -->
-                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger"
-                            invisible="active"/>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" invisible="active"/>
 
-                    <!-- Top section with name and active field -->
+                    <!-- Top section with name, type, and active field -->
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
-                        <h1><field name="name"/></h1>
-                        <field name="active" invisible="1"/> <!-- Keep active field invisible -->
+                        <h1><field name="name" placeholder="e.g. Stadtvilla Magdeburg"/></h1>
+                        <group>
+                            <field name="property_type_id" options="{'no_create': True}"/>
+                        </group>
+                        <field name="active" invisible="1"/>
                     </div>
+
+                    <group>
+                        <group>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                            <field name="partner_id" widget="res_partner_many2one" options="{'no_create': False}"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="invoice_id" invisible="not invoice_id"/>
+                        </group>
+                    </group>
+
+                    <!-- Tabbed Notebook Section -->
+                    <notebook>
+                        <!-- Tab 1: Building Details -->
+                        <page string="Building Details">
+                            <group>
+                                <group string="Dimensions &amp; Rooms">
+                                    <field name="living_area"/>
+                                    <field name="bedrooms"/>
+                                    <field name="facades"/>
+                                    <field name="kniestock_height"/>
+                                </group>
+                                <group string="Outdoor &amp; Extras">
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                </group>
+                            </group>
+                            <group string="Model Description">
+                                <field name="description" placeholder="Enter detailed house specifications..."/>
+                            </group>
+                        </page>
+
+                        <!-- Tab 2: Construction & Energy -->
+                        <page string="Construction &amp; Energy">
+                            <group>
+                                <group string="Technical Specifications">
+                                    <field name="construction_type"/>
+                                    <field name="energy_efficiency"/>
+                                    <field name="turnkey"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Tab 3: Musterhaus & Virtual Tour -->
+                        <page string="Show Home (Musterhaus)">
+                            <group>
+                                <group string="Regional Exhibition Office">
+                                    <field name="is_musterhaus"/>
+                                    <field name="musterhaus_location" required="is_musterhaus"/>
+                                </group>
+                                <group string="360° Virtual Experience">
+                                    <field name="virtual_tour_url" widget="url" placeholder="https://360.scanhaus.de/..."/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
-
-  <!-- Search View for Estate Property -->
+    <!-- Search View for Estate Property -->
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -66,15 +198,32 @@
                 <field name="selling_price"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
-                <!-- REQUIRED FILTER: Available properties -->
-                <filter name="filter_available" string="Available" domain="[('state', 'in', ['new', 'offer received'])]"/>
+                <field name="musterhaus_location"/>
 
-                <!-- REQUIRED GROUP BY: Postcode -->
+                <!-- Filters -->
+                <filter name="filter_available"
+                        string="Available"
+                        domain="[('state', 'in', ['draft', 'configured'])]"/>
+                <filter name="filter_musterhaus"
+                        string="Show Homes (Musterhäuser)"
+                        domain="[('is_musterhaus', '=', True)]"/>
+
+                <!-- Group By Options -->
                 <group expand="0" string="Group By">
-                    <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                    <filter name="group_by_postcode"
+                            string="Postcode"
+                            context="{'group_by': 'postcode'}"/>
+                    <filter name="group_by_property_type"
+                            string="Property Type"
+                            context="{'group_by': 'property_type_id'}"/>
+                    <filter name="group_by_location"
+                            string="Musterhaus Location"
+                            context="{'group_by': 'musterhaus_location'}"/>
+                    <filter name="group_by_state"
+                            string="Status"
+                            context="{'group_by': 'state'}"/>
                 </group>
             </search>
         </field>
     </record>
-
 </odoo>

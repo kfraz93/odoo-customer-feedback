@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Root Menu for Estate App -->
+    <!-- Root Menu for ScanHaus Fertighaus App -->
     <menuitem id="estate_menu_root"
-              name="Real Estate"
+              name="ScanHaus Manager"
               web_icon="estate,static/description/icon.png"
-              sequence="10"/> <!-- Adjust sequence to position the menu -->
+              sequence="10"/>
 
-    <!-- First Level Menu: Properties -->
+    <!-- First Level Menu: Properties & Models -->
     <menuitem id="estate_menu_properties"
-              name="Properties"
+              name="Fertighäuser"
               parent="estate_menu_root"
               sequence="10"/>
 
     <!-- Action Menu Item: Links to the Property Action -->
     <menuitem id="estate_property_menu_action"
-              name="All Properties"
+              name="House Models &amp; Projects"
               parent="estate_menu_properties"
               action="estate_property_action"
               sequence="10"/>
 
-    <!-- Submenu for Settings under Real Estate -->
+    <!-- Submenu for Settings / Configuration -->
     <menuitem id="estate_menu_settings"
-              name="Settings"
+              name="Configuration"
               parent="estate_menu_root"
               sequence="100"/>
 
-    <!-- Menu item for Property Types under Settings -->
+    <!-- Menu item for Property Types under Configuration -->
     <menuitem id="estate_property_type_menu_action"
-              name="Property Types"
+              name="House Categories (Types)"
               parent="estate_menu_settings"
               action="estate_property_type_action"
               sequence="10"/>
-
 </odoo>

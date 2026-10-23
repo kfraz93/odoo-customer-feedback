@@ -7,4 +7,7 @@ __pycache__/
 
 # Reports and logs
 *.log
-Odoo 17 Code Review Report.txt
+
+# Documents
+SPEC.md
+Prep.md

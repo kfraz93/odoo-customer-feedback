@@ -12,27 +12,41 @@
         </field>
     </record>
 
-    <!-- List (Tree) View for Real Estate Property Type -->
+    <!-- List (Tree) View -->
     <record id="estate_property_type_view_tree" model="ir.ui.view">
         <field name="name">estate.property.type.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <tree string="Property Types">
-                <field name="name"/>
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="House Category"/>
             </tree>
         </field>
     </record>
 
-    <!-- Form View for Real Estate Property Type -->
+    <!-- Form View -->
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. Stadtvilla"/></h1>
+                    </div>
+                    <notebook>
+                        <page string="Associated Houses">
+                            <field name="property_ids" readonly="1">
+                                <tree string="Houses">
+                                    <field name="name" string="House Model"/>
+                                    <field name="is_musterhaus" string="Musterhaus"/>
+                                    <field name="musterhaus_location" string="Location"/>
+                                    <field name="expected_price" string="Base Price (€)"/>
+                                    <field name="state" widget="badge"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

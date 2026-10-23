@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default House Categories -->
+        <record id="type_bungalow" model="estate.property.type">
+            <field name="name">Bungalow</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="type_1_5_geschosser" model="estate.property.type">
+            <field name="name">1,5-Geschosser</field>
+            <field name="sequence">2</field>
+        </record>
+
+        <record id="type_stadtvilla" model="estate.property.type">
+            <field name="name">Stadtvilla</field>
+            <field name="sequence">3</field>
+        </record>
+
+        <record id="type_mehrgenerationenhaus" model="estate.property.type">
+            <field name="name">Mehrgenerationenhaus</field>
+            <field name="sequence">4</field>
+        </record>
+
+        <record id="type_doppelhaus" model="estate.property.type">
+            <field name="name">Doppelhaus</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="type_aktionshaus" model="estate.property.type">
+            <field name="name">Aktionshaus</field>
+            <field name="sequence">6</field>
+        </record>
+
+        <!-- Sample Show Homes (Musterhäuser) -->
+        <record id="musterhaus_magdeburg" model="estate.property">
+            <field name="name">Musterhaus Stadtvilla Magdeburg</field>
+            <field name="property_type_id" ref="type_stadtvilla"/>
+            <field name="expected_price">320000</field>
+            <field name="living_area">160</field>
+            <field name="bedrooms">4</field>
+            <field name="construction_type">holzrahmen</field>
+            <field name="energy_efficiency">kfw40</field>
+            <field name="turnkey">1</field>
+            <field name="is_musterhaus">1</field>
+            <field name="musterhaus_location">magdeburg</field>
+            <field name="virtual_tour_url">https://360.scanhaus.de/magdeburg</field>
+            <field name="state">configured</field>
+        </record>
+
+        <record id="musterhaus_chemnitz" model="estate.property">
+            <field name="name">Musterhaus 1,5-Geschosser Chemnitz</field>
+            <field name="property_type_id" ref="type_1_5_geschosser"/>
+            <field name="expected_price">280000</field>
+            <field name="living_area">140</field>
+            <field name="bedrooms">3</field>
+            <field name="kniestock_height">2.0</field>
+            <field name="construction_type">holzrahmen</field>
+            <field name="energy_efficiency">kfw40</field>
+            <field name="turnkey">1</field>
+            <field name="is_musterhaus">1</field>
+            <field name="musterhaus_location">chemnitz</field>
+            <field name="virtual_tour_url">https://360.scanhaus.de/chemnitz</field>
+            <field name="state">configured</field>
+        </record>
+    </data>
+</odoo>
